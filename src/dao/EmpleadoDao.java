@@ -83,7 +83,7 @@ public class EmpleadoDao {
 		}
 		return empleado;
 	}
-
+  
 	public List<Empleado> traerTodos() {
 		List<Empleado> lista = null;
 		try {

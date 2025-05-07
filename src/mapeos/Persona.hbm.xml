@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-mapping>
+	<class name="datos.Persona" table="persona">
+		<id column="idPersona" name="idPersona">
+			<generator class="identity" />
+		</id>
+		<property name="nombre" column="nombre" type="string" />
+		<property name="apellido" column="apellido" type="string" />
+		<property name="dni" column="dni" type="int" />
+		<property name="email" column="email" type="string" />
+		<property name="movil" column="movil" type="int" />
+		<property name="telefono" column="telefono" type="int" />
+		
+		<joined-subclass name="datos.Cliente" table="cliente">
+			<key column="idCliente" />
+			<property column="estado" name="estado" type="boolean" />
+			<property column="apellido" name="apellido" type="string" />
+			<set name="turnos" table="turno" order-by="idTurno asc" inverse="true" lazy="true" fetch="select">
+				<key column="idCliente" not-null="true" />
+			<one-to-many class="datos.Turno" />
+			</set>
+		</joined-subclass>
+		
+		<joined-subclass name="datos.Empleado" table="empleado">
+			<key column="idEmpleado" />
+			<property column="nombre" name="nombre" type="string" />
+			<property column="apellido" name="apellido" type="string" />
+			<property column="dni" name="dni" type="long" />
+			<property column="email" name="email" type="string" />
+			<property column="movil" name="movil" type="string" />
+			<property column="telefono" name="telefono" type="string" />
+			<property column="estado" name="estado" type="boolean" />
+			<set name="turnos" table="turno" order-by="idTurno asc" inverse="true" lazy="true" fetch="select">
+				<key column="idEmpleado" not-null="true" />
+				<one-to-many class="datos.Turno" />
+			</set>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
