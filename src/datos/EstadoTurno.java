@@ -1,5 +1,5 @@
 package datos;
 
-public class EstadoTurno {
-	
+public enum EstadoTurno {
+	CANCELADO, EN_PROCESO, COMPLETADO
 }
