@@ -1,10 +1,10 @@
 package datos;
 
-public class Persona {
+public abstract class Persona {
 	protected int idPersona;
 	private String nombre;
 	private String apellido;
-	private long dni;
+	private int dni;
 	private String email;
 	private String movil;
 	private String telefono;
@@ -13,7 +13,7 @@ public class Persona {
 		super();
 	}
 
-	public Persona(String nombre, String apellido, long dni, String email, String movil, String telefono) {
+	public Persona(String nombre, String apellido, int dni, String email, String movil, String telefono) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -51,7 +51,7 @@ public class Persona {
 		return dni;
 	}
 
-	protected void setDni(long dni) {
+	protected void setDni(int dni) {
 		this.dni = dni;
 	}
 

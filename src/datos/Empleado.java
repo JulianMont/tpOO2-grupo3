@@ -1,19 +1,19 @@
 package datos;
 
-import java.util.List;
+import java.util.Set;
 
 public class Empleado extends Persona {
 	private String legajo;
 	private String puesto;
-	private List<Turno> turnos;
+	private Set<Turno> turnos;
 	private boolean estado;
 
 	public Empleado() {
 		super();
 	}
 
-	public Empleado(String nombre, String apellido, long dni, String email, String movil, String telefono,
-			String legajo, String puesto, List<Turno> turnos, boolean estado) {
+	public Empleado(String nombre, String apellido, int dni, String email, String movil, String telefono,
+			String legajo, String puesto, Set<Turno> turnos, boolean estado) {
 		super(nombre, apellido, dni, email, movil, telefono);
 		this.legajo = legajo;
 		this.puesto = puesto;
@@ -37,11 +37,11 @@ public class Empleado extends Persona {
 		this.puesto = puesto;
 	}
 
-	public List<Turno> getTurnos() {
+	public Set<Turno> getTurnos() {
 		return turnos;
 	}
 
-	public void setTurnos(List<Turno> turnos) {
+	public void setTurnos(Set<Turno> turnos) {
 		this.turnos = turnos;
 	}
 
