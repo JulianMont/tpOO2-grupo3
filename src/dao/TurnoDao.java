@@ -69,7 +69,8 @@ public class TurnoDao {
         }
         return turno;
     }
-
+    
+    
     public List<Turno> traerTodos() {
         List<Turno> lista = null;
         try {
