@@ -83,6 +83,19 @@ public class EmpleadoDao {
 		}
 		return empleado;
 	}
+	
+	//CASO DE USO 3
+	public List<Turno> obtenerTurnosPorEmpleado(int idEmpleado) {
+	    Session session = HibernateUtil.getSessionFactory().openSession();
+	    Query<Turno> query = session.createQuery(
+	        "FROM Turno t WHERE t.empleado.id = :idEmpleado", Turno.class
+	    );
+	    query.setParameter("idEmpleado", idEmpleado);
+	    List<Turno> turnos = query.list();
+	    session.close();
+	    return turnos;
+	}
+
   
 	public List<Empleado> traerTodos() {
 		List<Empleado> lista = null;
