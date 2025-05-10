@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="datos.Cliente" table="cliente">
-		<id column="idCliente" name="idCliente">
-			<generator class="identity" />
-		</id>
-		<property column="nombre" name="nombre" type="string" />
-		<property column="descripcion" name="descripcion" type="string" />
-	</class>
+    <class name="datos.Servicio" table="servicio">
+        <id name="idServicio" column="idServicio">
+            <generator class="identity"/>
+        </id>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="descripcion" column="descripcion" type="string"/>
+        
+        
+        
+       
+    </class>
 </hibernate-mapping>

@@ -10,7 +10,7 @@ import org.hibernate.query.Query;
 
 import datos.Cliente;
 import datos.Turno;
-import util.HibernateUtil;
+
 
 public class TurnoDao {
     private Session session;
@@ -132,7 +132,22 @@ public class TurnoDao {
     }
     
     
-    
+    //CU6
+    public List<Turno> traerPorEmpleado(int dniEmpleado) {
+        List<Turno> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                        "from Turno t where t.empleado.dni = :dni order by t.fecha", 
+                        Turno.class)
+                    .setParameter("dni", dniEmpleado)
+                    .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
     
     
     

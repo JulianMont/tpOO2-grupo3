@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import datos.Servicio;
-import util.HibernateUtil;
+
 
 public class ServicioDao {
     private Session session;
@@ -59,11 +59,15 @@ public class ServicioDao {
         }
     }
 
-    public Servicio traer(int idServicio) {
+
+    public Servicio traer(String nombre) {
         Servicio servicio = null;
         try {
             iniciaOperacion();
-            servicio = session.get(Servicio.class, idServicio);
+            String hql = "from Servicio s where s.nombre = :nombre";
+            servicio = (Servicio) session.createQuery(hql)
+                            .setParameter("nombre", nombre)
+                            .uniqueResult();
         } finally {
             session.close();
         }
