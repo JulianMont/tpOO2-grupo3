@@ -3,18 +3,19 @@
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-	<session-factory>
-		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">
-			jdbc:mysql://localhost/bd-hibernate-una-entidad?serverTimezone=GMT-3</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">qwerty1234</property>
-		<property name="connection.pool_size">1</property>
-		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="show_sql">false</property><!-- en true muestra hql en consola-->
-		<!--Mapeo Entidades   -->
-		<mapping resource="mapeos/Persona.hbm.xml" />
-		<mapping resource="mapeos/Servicio.hbm.xml" />
-		<mapping resource="mapeos/Turno.hbm.xml" />
-	</session-factory>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/bd-oo2proyecto?serverTimezone=GMT-3</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">Litolito17</property>
+        <property name="connection.pool_size">1</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="show_sql">false</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        
+        <!-- Mapear archivos .hbm.xml -->
+        <mapping resource="mapeos/Persona.hbm.xml" />
+        <mapping resource="mapeos/Servicio.hbm.xml" />
+        <mapping resource="mapeos/Turno.hbm.xml" />
+    </session-factory>
 </hibernate-configuration>

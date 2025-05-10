@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import datos.Turno;
-import util.HibernateUtil;
+
 
 public class TurnoDao {
     private Session session;
@@ -81,4 +81,20 @@ public class TurnoDao {
         }
         return lista;
     }
+    
+    public List<Turno> traerPorEmpleado(int dniEmpleado) {
+        List<Turno> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                        "from Turno t where t.empleado.dni = :dni order by t.fecha", 
+                        Turno.class)
+                    .setParameter("dni", dniEmpleado)
+                    .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
 }

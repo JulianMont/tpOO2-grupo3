@@ -3,6 +3,9 @@ package datos;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 public class Turno {
 	protected int idTurno;
 	private LocalDate fecha;
@@ -10,14 +13,14 @@ public class Turno {
 	private Cliente cliente;
 	private Empleado empleado;
 	private Servicio servicio;
-	private EstadoTurno estado;
+	private String estado;
 	
 	public Turno() {
 		super();
 	}
 
 	public Turno(LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado,
-			Servicio servicio, EstadoTurno estado) {
+			Servicio servicio, String estado) {
 		super();
 		this.fecha = fecha;
 		this.horaTurno = horaTurno;
@@ -75,11 +78,11 @@ public class Turno {
 		this.servicio = servicio;
 	}
 
-	public EstadoTurno getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(EstadoTurno estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 

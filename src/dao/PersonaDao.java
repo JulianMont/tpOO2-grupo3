@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import datos.Persona;
-import util.HibernateUtil;
+
 
 public class PersonaDao {
     private Session session;

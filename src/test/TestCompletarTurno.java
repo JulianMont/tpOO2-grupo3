@@ -4,6 +4,10 @@ import datos.EstadoTurno;
 import datos.Cliente;
 import datos.Empleado;
 import datos.Turno;
+import negocio.ClienteABM;
+import negocio.EmpleadoABM;
+import negocio.ServicioABM;
+import negocio.TurnoABM;
 import datos.Servicio;
 import dao.ClienteDao;
 import dao.EmpleadoDao;
@@ -17,51 +21,72 @@ import java.util.Set;
 
 public class TestCompletarTurno {
     public static void main(String[] args) {
-    
-    	ClienteDao clienteDao = new ClienteDao();
-        EmpleadoDao empleadoDao = new EmpleadoDao();
-        ServicioDao servicioDao = new ServicioDao();
-        TurnoDao turnoDao = new TurnoDao();
+    	TurnoABM turnoAbm = new TurnoABM();
+    	ClienteABM clienteAbm = new ClienteABM();
+        EmpleadoABM empleadoAbm = new EmpleadoABM();
+        ServicioABM servicioAbm = new ServicioABM();
+       	
 
         // Crear y guardar Cliente
         Cliente cliente = new Cliente(
-                "Juan", "Pérez", 12345678, "juan@email.com", "111-1111", "222-2222",
+                "Mati", "Forlan",123336 , "juan@email.com", "11111", "22222",
                 new HashSet<>(), true
         );
-        clienteDao.agregar(cliente);
+        try {
+			clienteAbm.agregar(cliente);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 
         // Crear y guardar Empleado
         Empleado empleado = new Empleado(
-                "Pedro", "Gómez", 87654321, "pedro@email.com", "333-3333", "444-4444",
-                "LEG123", "Peluquero", new HashSet<>(), true
+                "Roman", "Perez", 34567, "pedro@email.com", "45697833", "9",
+                "LEG123", "Mecanico", new HashSet<>(), true
         );
-        empleadoDao.agregar(empleado);
-
+        try {
+			empleadoAbm.agregar(empleado);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println(empleado.getDni());
         // Crear y guardar Servicio
-        Servicio servicio = new Servicio("Corte de cabello", "Corte de cabello para hombre");
-        servicioDao.agregar(servicio);
-
+        Servicio servicio = new Servicio("Farmacia", "Se venden medicamentos");
+        try {
+			servicioAbm.agregar(servicio);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
         // Crear Turno con entidades ya persistidas
         Turno turno = new Turno();
-        turno.setEstado(EstadoTurno.EN_PROCESO);
+        turno.setEstado(EstadoTurno.EN_PROCESO.name());
         turno.setFecha(null);  // Temporal si la columna permite null
         turno.setHoraTurno(null);
         turno.setCliente(cliente);
         turno.setEmpleado(empleado);
         turno.setServicio(servicio);
-        turnoDao.agregar(turno);
-
         try {
-            // Completar el turno
-            turno.setEstado(EstadoTurno.COMPLETADO);
-            turnoDao.actualizar(turno);
+			turnoAbm.agregar(turno);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println(turno.getIdTurno());
+        
+        try {
+            turnoAbm.completarTurno(turno.getIdTurno(), true);
 
-            Turno t1 = turnoDao.traer(turno.getIdTurno());
+            Turno t1 = turnoAbm.traer(turno.getIdTurno());
             System.out.println("Esperado: COMPLETADO | Real: " + t1.getEstado());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-}
+
+    }}
+
 
 

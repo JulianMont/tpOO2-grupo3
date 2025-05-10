@@ -6,7 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import datos.Empleado;
-import util.HibernateUtil;
+import datos.Turno;
+
+
 
 public class EmpleadoDao {
 	private Session session;
@@ -71,7 +73,7 @@ public class EmpleadoDao {
 		return empleado;
 	}
 
-	public Empleado traerPorDni(long dni) {
+	public Empleado traerPorDni(int dni) {
 		Empleado empleado = null;
 		try {
 			iniciaOperacion();
@@ -85,12 +87,12 @@ public class EmpleadoDao {
 	}
 	
 	//CASO DE USO 3
-	public List<Turno> obtenerTurnosPorEmpleado(int idEmpleado) {
+	public List<Turno> obtenerTurnosPorEmpleado(int dniEmpleado) {
 	    Session session = HibernateUtil.getSessionFactory().openSession();
 	    Query<Turno> query = session.createQuery(
 	        "FROM Turno t WHERE t.empleado.id = :idEmpleado", Turno.class
 	    );
-	    query.setParameter("idEmpleado", idEmpleado);
+	    query.setParameter("idEmpleado", dniEmpleado);
 	    List<Turno> turnos = query.list();
 	    session.close();
 	    return turnos;
