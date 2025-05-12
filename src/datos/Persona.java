@@ -47,7 +47,7 @@ public abstract class Persona {
 		this.apellido = apellido;
 	}
 
-	public long getDni() {
+	public int getDni() {
 		return dni;
 	}
 

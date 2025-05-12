@@ -1,0 +1,45 @@
+package test;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import datos.Cliente;
+import datos.Turno;
+import negocio.TurnoABM;
+
+public class TestModificarTurno {
+
+	public static void main(String[] args) {
+        
+
+        Set<Turno> turnosCliente = new HashSet<>;
+
+        Set<Turno> turnoEmpleado = new HashSet<>;
+
+		Cliente cliente = new Cliente("Jose","Perez",12344321,"josepe@gmail.com","11 23452345","42415601",turnosCliente, true);
+        
+        Empleado empleado = new Empleado("Juan","Gomez",21212323,"Juango@outlook.com","11 26589566","35323631","L 1234",turnoEmpleado,true);
+
+        LocalDate fecha = LocalDate.of (2025,5,11);
+        LocalDateTime hora = LocalDateTime(fecha,10,30);
+
+        Turno turno = new Turno ();
+
+        LocalDate fechaModificada = LocalDate.of (2025,5,12);
+		LocalDateTime horaModificada = LocalDateTime(fechaModificada,10,30);
+
+        
+
+        turno.modificarTurno (1,fechaModificada,horaModificada);
+
+       System.out.println(turno);
+
+	   turno.cancelarTurno(1,cliente,false);
+	   
+
+		
+		
+
+
+	}
+}

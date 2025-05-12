@@ -6,7 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import datos.Empleado;
-import util.HibernateUtil;
+import datos.Turno;
+
 
 public class EmpleadoDao {
 	private Session session;
@@ -71,7 +72,7 @@ public class EmpleadoDao {
 		return empleado;
 	}
 
-	public Empleado traerPorDni(long dni) {
+	public Empleado traerPorDni(int dni) {
 		Empleado empleado = null;
 		try {
 			iniciaOperacion();
