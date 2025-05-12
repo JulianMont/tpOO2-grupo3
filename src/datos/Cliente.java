@@ -35,7 +35,10 @@ public class Cliente extends Persona {
 
 	@Override
 	public String toString() {
-		return "Cliente [turnos=" + turnos + ", estado=" + estado + "]";
+		return "Cliente: " +  super.toString() + " | Estado: " + estado;
 	}
+	
+	
 
+	
 }

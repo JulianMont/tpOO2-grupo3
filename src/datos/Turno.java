@@ -1,7 +1,10 @@
 package datos;
 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Turno {
 	protected int idTurno;
@@ -9,22 +12,23 @@ public class Turno {
 	private LocalDateTime horaTurno;
 	private Cliente cliente;
 	private Empleado empleado;
-	private Servicio servicio;
 	private String estado;
+	private Set<Servicio> servicios;
 	
 	public Turno() {
 		super();
 	}
 
-	public Turno(LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado,
-			Servicio servicio, String estado) {
+	public Turno(int idTurno, LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado,
+			String estado, Set<Servicio> servicios) {
 		super();
+		this.idTurno = idTurno;
 		this.fecha = fecha;
 		this.horaTurno = horaTurno;
 		this.cliente = cliente;
 		this.empleado = empleado;
-		this.servicio = servicio;
 		this.estado = estado;
+		this.servicios = servicios;
 	}
 
 	public int getIdTurno() {
@@ -67,14 +71,6 @@ public class Turno {
 		this.empleado = empleado;
 	}
 
-	public Servicio getServicio() {
-		return servicio;
-	}
-
-	public void setServicio(Servicio servicio) {
-		this.servicio = servicio;
-	}
-
 	public String getEstado() {
 		return estado;
 	}
@@ -83,11 +79,34 @@ public class Turno {
 		this.estado = estado;
 	}
 
+	public Set<Servicio> getServicios() {
+		return servicios;
+	}
+
+	public void setServicios(Set<Servicio> servicios) {
+		this.servicios = servicios;
+	}
+
 	@Override
 	public String toString() {
-		return "Turno [idTurno=" + idTurno + ", fecha=" + fecha + ", horaTurno=" + horaTurno + ", cliente=" + cliente
-				+ ", empleado=" + empleado + ", servicio=" + servicio + ", estado=" + estado + "]";
+	    return "Turno #" + idTurno + "\n" +
+	           "Fecha: " + fecha + " | Hora: " + horaTurno + " | Estado: " +estado+ "\n" +
+	           cliente + "\n" +
+	           empleado + "\n" +
+	           "Servicios:\n" + servicios.stream()
+	                                     .map(servicio -> " - " + servicio)
+	                                     .collect(Collectors.joining("\n"));
 	}
+
+
 	
-		
+
+	
+	
+	
+	
+	
+	
+	
 }
+	

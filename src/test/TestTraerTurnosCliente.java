@@ -5,7 +5,7 @@ import java.util.List;
 
 import datos.Cliente;
 import datos.Turno;
-
+import negocio.ClienteABM;
 import negocio.TurnoABM;
 
 public class TestTraerTurnosCliente {
@@ -13,19 +13,31 @@ public class TestTraerTurnosCliente {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		TurnoABM abm = new TurnoABM();
+		TurnoABM turnoABM = new TurnoABM();
+		ClienteABM clienteABM = new ClienteABM();
 		
-		Cliente cliente = new Cliente();
-		cliente.setIdPersona(1);
+		//EN CASO DE ERROR PARA EJECUTAR, EN HIBERNATE CONFIG DONDE DICE CREATE/UPDATE 
+		//PONER CREATE Y LUEGO EJECUTAR LLENARDB
+		//CAMBIAR CREATE POR UPDATE 
 		
-		LocalDate fecha = LocalDate.of(2025, 5, 8);
+		Cliente cliente1 = clienteABM.traer(33123456);
+        LocalDate fecha = LocalDate.now();
+        
+        
+        List<Turno> listaTurnos = turnoABM.traerTurnosCliente(cliente1, fecha); 
+        
+        System.out.println("Turnos encontrados para el cliente " + cliente1.getNombre() + " en la fecha " + fecha + ":");
+        if (listaTurnos != null && !listaTurnos.isEmpty()) {
+            for (Turno turno : listaTurnos) {
+                System.out.println("==========================================");
+                System.out.println(turno);
+                System.out.println("==========================================\n");
+            }
+        } else {
+            System.out.println("No se encontraron turnos para el cliente " + cliente1.getNombre() + " en la fecha " + fecha);
+        }
 		
-		List<Turno> listaTurnos = abm.traerTurnosCliente(cliente, fecha);
-		
-		for(Turno turno : listaTurnos) {
-			System.out.println(turno);
-		}
-		
+
 		System.out.println("OK");
 	}
 

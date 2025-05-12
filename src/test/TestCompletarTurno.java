@@ -68,7 +68,9 @@ public class TestCompletarTurno {
         turno.setHoraTurno(null);
         turno.setCliente(cliente);
         turno.setEmpleado(empleado);
-        turno.setServicio(servicio);
+        Set<Servicio> servicios = new HashSet<>();
+        servicios.add(servicio);
+        turno.setServicios(servicios);
         try {
 			turnoAbm.agregar(turno);
 		} catch (Exception e) {
