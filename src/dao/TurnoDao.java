@@ -3,10 +3,13 @@ package dao;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 
 import datos.Cliente;
 import datos.Turno;
@@ -89,17 +92,29 @@ public class TurnoDao {
     
     
     //CU 7
-    public List<Turno> traerTurnosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin){
+    public List<Turno> traerTurnosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) throws HibernateException{
     	
-    	List<Turno> turnos = new ArrayList<Turno>();
+    	List<Turno> turnos = null;
     	
     	try {
     		iniciaOperacion();
     		
-    		Query<Turno> query = session.createQuery("from Turno t where t.fecha between :fechaInicio AND :fechaFin", Turno.class)
+    		String hql = "from Turno t where t.fecha between :fechaInicio AND :fechaFin";
+    		Query<Turno> query = session.createQuery(hql,Turno.class)
     				.setParameter("fechaInicio", fechaInicio)
     				.setParameter("fechaFin", fechaFin);
-    		turnos = query.getResultList();
+    		
+            turnos = query.getResultList();
+            
+            for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
+            
+            
+        
+          
 		} finally {
 			session.close();
 			// TODO: handle finally clause
@@ -113,15 +128,24 @@ public class TurnoDao {
     
     public List<Turno> traerTurnosCliente(Cliente cliente,LocalDate fecha){
     	
-    	List<Turno> turnos = new ArrayList<Turno>();
+    	List<Turno> turnos = null;
     	
     	try {
     		iniciaOperacion();
     		
-    		Query<Turno> query = session.createQuery("from Turno t where t.cliente = :cliente and t.fecha = :fecha", Turno.class)
+    		String hql = "from Turno t where t.cliente = :cliente and t.fecha = :fecha";
+    		Query<Turno> query = session.createQuery(hql, Turno.class)
     				.setParameter("cliente", cliente)
     				.setParameter("fecha", fecha);
     		turnos = query.getResultList();
+    		
+            for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
+            
+    		
 		} finally {
 			session.close();
 			// TODO: handle finally clause

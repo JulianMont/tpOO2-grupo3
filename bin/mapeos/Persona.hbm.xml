@@ -25,6 +25,8 @@
 
         <joined-subclass name="datos.Empleado" table="empleado">
             <key column="idEmpleado"/>
+            <property name="legajo" column="legajo" type="string"/>
+			<property name="puesto" column="puesto" type="string"/>
             <property name="estado" column="estado" type="boolean"/>
             <set name="turnos" table="turno" inverse="true" lazy="true" fetch="select">
                 <key column="idEmpleado" not-null="true"/>

@@ -53,10 +53,11 @@ public class Empleado extends Persona {
 		this.estado = estado;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Empleado [legajo=" + legajo + ", puesto=" + puesto + ", turnos=" + turnos + ", estado=" + estado + "]";
+	    return "Empleado: " + super.toString() + " | Legajo: " + legajo +
+	           ", Puesto: " + puesto + ", Estado: " + estado;
 	}
-	
 
 }

@@ -14,16 +14,26 @@ public class TestTraerTurnos {
 		
 		TurnoABM abm = new TurnoABM();
 		
-		Cliente cliente = new Cliente();
-		cliente.setIdPersona(1);
 		
-		LocalDate fechaInicio = LocalDate.of(2025, 5, 1);
-		LocalDate fechaFin = LocalDate.of(2025, 5, 8);
+		//EN CASO DE ERROR PARA EJECUTAR, EN HIBERNATE CONFIG DONDE DICE CREATE/UPDATE 
+		//PONER CREATE Y LUEGO EJECUTAR LLENARDB
+		//CAMBIAR CREATE POR UPDATE 
+		
+        LocalDate fechaInicio = LocalDate.of(2025, 5, 12);
+        LocalDate fechaFin = LocalDate.of(2025, 5, 13);
 		
 		List<Turno> listaTurnos = abm.traerTurnos(fechaInicio, fechaFin);
 		
-		for(Turno turno : listaTurnos) {
-			System.out.println(turno);
+		if (listaTurnos != null && !listaTurnos.isEmpty()) {
+		    System.out.println("Lista de Turnos entre " + fechaInicio + " y " + fechaFin + ":");
+		    
+		    for (Turno turno : listaTurnos) {
+		        System.out.println("==========================================");
+		        System.out.println(turno);
+		        System.out.println("==========================================\n");
+		    }
+		} else {
+		    System.out.println("No se encontraron turnos en el rango de fechas especificado.");
 		}
 		
 		System.out.println("OK");

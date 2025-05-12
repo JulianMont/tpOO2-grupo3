@@ -20,7 +20,7 @@ public class TurnoABM {
 
 public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	 return turnoDao.traerTurnosEntreFechas(fechaInicio, fechaFin);
-	    }
+}
 	
 	
 //Caso de uso 8
