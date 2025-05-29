@@ -93,7 +93,7 @@ public boolean  modificarTurno (int idTurno, LocalDate fecha, LocalDateTime hora
 //Caso de uso 4
 
 
-public boolean cancelarTurno(int id, Cliente solicitante, boolean cancelar) {
+public boolean cancelarTurno(int id, Cliente solicitante, boolean esEmpleado) {
 
 Turno turno = turnoDao.traer(id);
 
