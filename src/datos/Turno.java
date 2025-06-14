@@ -12,7 +12,7 @@ public class Turno {
 	private LocalDateTime horaTurno;
 	private Cliente cliente;
 	private Empleado empleado;
-	private String estado;
+	private EstadoTurno estado = EstadoTurno.EN_PROCESO;
 	private Set<Servicio> servicios;
 	
 	public Turno() {
@@ -20,7 +20,7 @@ public class Turno {
 	}
 
 	public Turno(int idTurno, LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado,
-			String estado, Set<Servicio> servicios) {
+			EstadoTurno estado, Set<Servicio> servicios) {
 		super();
 		this.idTurno = idTurno;
 		this.fecha = fecha;
@@ -71,11 +71,11 @@ public class Turno {
 		this.empleado = empleado;
 	}
 
-	public String getEstado() {
+	public EstadoTurno getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(EstadoTurno estado) {
 		this.estado = estado;
 	}
 

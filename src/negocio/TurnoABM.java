@@ -2,18 +2,22 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
 import dao.TurnoDao;
 import datos.Cliente;
+import datos.Empleado;
 import datos.EstadoTurno;
 import datos.Turno;
 
 public class TurnoABM {
+	
 	private TurnoDao turnoDao = new TurnoDao();
 
-	
+	private List<Turno> turnos = new ArrayList<>();
 	
 
 //Caso de uso 7 
@@ -46,6 +50,7 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	
 
 //Caso de uso 6
+	
 	public void completarTurno(int idTurno, boolean fueAtendido) throws Exception {
     Turno turno = turnoDao.traer(idTurno);
     if (turno == null) {
@@ -53,9 +58,9 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
     }
 
     if (fueAtendido) {
-        turno.setEstado(EstadoTurno.COMPLETADO.name());
+        turno.setEstado(EstadoTurno.COMPLETADO);
     } else {
-        turno.setEstado(EstadoTurno.CANCELADO.name());}
+        turno.setEstado(EstadoTurno.CANCELADO);}
 
     turnoDao.actualizar(turno);
     System.out.println("Estado actualizado a: " + turno.getEstado());
@@ -66,16 +71,79 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	public List<Turno> traerTurnosDeEmpleado(int dniEmpleado) {
 	    return turnoDao.traerPorEmpleado(dniEmpleado);
 	}
+	
+	
 
 
+	
+	
+	// ---- Caso de Uso 1 ----
+    
+    // Verificar si existe el turno
+    
+    public boolean existeTurno (Empleado empleado, LocalDate dia, LocalDateTime horaTurno) {
+    	
+    	List<Turno> turnosEnMismoHorario = turnoDao.traerTurnosPorEmpleadoFechaHora(empleado.getDni(), dia, horaTurno);
+        return !turnosEnMismoHorario.isEmpty();
+    	
+    }
+    
+    // Reservar el Turno
+    
+    public Turno turnoReservado(Turno turno) throws Exception{
+    	if (existeTurno(turno.getEmpleado(), turno.getFecha(), turno.getHoraTurno())) {
+            throw new Exception("Ya existe un turno para ese empleado en esa fecha y hora");
+        }
+        int id = turnoDao.agregar(turno);
+        turno.setIdTurno(id);
+        return turno;
+    }
+    
+    
+    // ---- Caso de uso 2 ----
+    
+    // Cancelar el Turno
 
-public boolean  modificarTurno (int idTurno, LocalDate fecha, LocalDateTime horaTurno ){
+	public boolean cancelarTurno(int id, Cliente solicitante, boolean esEmpleado) {
+	
+		Turno turno = turnoDao.traer(id);
+		
+		
+		if (turno != null) {
+		    
+			if (esEmpleado) {
+			    turno.setEstado(EstadoTurno.CANCELADO);
+			    turnoDao.actualizar(turno);
+			    System.out.println("El empleado ha cancelado el turno.");
+			    return true;
+			} else if (turno.getCliente().getIdPersona() == solicitante.getIdPersona()) {
+			    turno.setEstado(EstadoTurno.CANCELADO);
+			    turnoDao.actualizar(turno);
+			    System.out.println("El cliente ha cancelado su turno.");
+			    return true;
+			}
+	    } else {
+	        System.out.println("El turno no existe.");
+	       
+	    }
+		
+		 return false;
+		
+	}
+    
+    // ---- Caso de Uso 4 ----
+    
+	// Modificar la Fecha y Hora del Turno
 
-
-
-    Turno turno = turnoDao.traer(idTurno);
-
-    if (turno != null){
+	public boolean  modificarTurnoPorDiaYHora (int idTurno, LocalDate fecha, LocalDateTime horaTurno ){
+		
+	    Turno turno = turnoDao.traer(idTurno);
+	    
+	    if(turno == null) {
+	    	System.out.println("No existe el turno con ese ID.");
+	    	return false;
+	    }
+	    
         turno.setFecha(fecha);
         turno.setHoraTurno(horaTurno);
         turnoDao.actualizar(turno);
@@ -83,33 +151,13 @@ public boolean  modificarTurno (int idTurno, LocalDate fecha, LocalDateTime hora
         System.out.println("Turno modificado exitosamente.");
 
         return true;
-
-    }else{
-        return false;
-    }}
-
-
-
-
-public boolean cancelarTurno(int id, Cliente solicitante, boolean esEmpleado) {
-
-Turno turno = turnoDao.traer(id);
-
-// Validar que el turno exista
-
-if (turno != null) {
-    
-    if (esEmpleado || turno.getCliente().equals(solicitante)) {
-        turno.setEstado(EstadoTurno.CANCELADO.name());
-        turnoDao.actualizar(turno);
-        System.out.println("Turno cancelado exitosamente.");
-        return true;
-    } else {
-        System.out.println("Permiso denegado para cancelar el turno.");
-        return false;
-    }
-    } else {
-        System.out.println("El turno no existe.");
-        return false;
-    }
-}}
+	    
+	}
+	
+    //  ---- Caso de Uso 9 ----
+	
+	public List<Turno> traerTurnosPorServicioYFecha(int idServicio, LocalDate fecha) {
+	    return turnoDao.traerPorServicioYFecha(idServicio, fecha);
+	}
+	
+}
