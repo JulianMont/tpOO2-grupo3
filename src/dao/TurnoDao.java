@@ -1,6 +1,7 @@
 package dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,13 @@ import org.hibernate.query.Query;
 
 
 import datos.Cliente;
+import datos.Empleado;
 import datos.Turno;
 
 
 public class TurnoDao {
+	
+	
     private Session session;
     private Transaction tx;
 
@@ -172,6 +176,42 @@ public class TurnoDao {
         return lista;
     }
 
+    
+    // CdU 9
+    
+    public List<Turno> traerTurnosPorEmpleadoFechaHora(int dniEmpleado, LocalDate fecha, LocalDateTime horaTurno) {
+        List<Turno> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                "from Turno t where t.empleado.dni = :dni and t.fecha = :fecha and t.horaTurno = :horaTurno order by t.fecha", 
+                Turno.class)
+                .setParameter("dni", dniEmpleado)
+                .setParameter("fecha", fecha)
+                .setParameter("horaTurno", horaTurno)
+                .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
+
+    public List<Turno> traerPorServicioYFecha(int idServicio, LocalDate fecha) {
+        List<Turno> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                "select t from Turno t join t.servicios s " +
+                "where s.idServicio = :idServicio and t.fecha = :fecha", Turno.class)
+                .setParameter("idServicio", idServicio)
+                .setParameter("fecha", fecha)
+                .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
     
     
     
