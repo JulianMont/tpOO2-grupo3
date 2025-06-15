@@ -14,6 +14,8 @@ import org.hibernate.query.Query;
 
 import datos.Cliente;
 import datos.Empleado;
+import datos.EstadoTurno;
+import datos.Servicio;
 import datos.Turno;
 
 
@@ -212,7 +214,39 @@ public class TurnoDao {
         }
         return lista;
     }
+
+    public List<Turno> traerPorServicio(int id) {
+        List<Turno> turnos = null;
+        try {
+            iniciaOperacion();
+            String hql = "from Turno t where t.servicio = :servicio";
+            turnos = session.createQuery(hql, Turno.class)
+                            .setParameter("servicio", id)
+                            .getResultList();
+        } finally {
+            session.close();
+        }
+        return turnos;
+    }
     
+    // --- CU 9 ---
     
+    public List<Turno> traerCancelados() {
+        List<Turno> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery(
+                "from Turno t " +
+                "join fetch t.cliente " +
+                "join fetch t.servicios " +
+                "where t.estado = :estadoCancelado " +
+                "order by t.fecha, t.horaTurno", Turno.class)
+                .setParameter("estadoCancelado", EstadoTurno.CANCELADO)
+                .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
     
 }

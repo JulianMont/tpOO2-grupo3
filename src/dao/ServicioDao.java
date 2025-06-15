@@ -84,4 +84,19 @@ public class ServicioDao {
         }
         return lista;
     }
+    
+    public Servicio traerPorId(int id) {
+        Servicio servicio = null;
+        try {
+            iniciaOperacion();
+            String hql = "from Servicio s where s.id = :id";
+            servicio = (Servicio) session.createQuery(hql)
+                            .setParameter("id", id)
+                            .uniqueResult();
+        } finally {
+            session.close();
+        }
+        return servicio;
+    }
+    
 }

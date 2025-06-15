@@ -2,22 +2,21 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+
 
 
 import dao.TurnoDao;
 import datos.Cliente;
 import datos.Empleado;
 import datos.EstadoTurno;
+import datos.Persona;
 import datos.Turno;
 
 public class TurnoABM {
 	
 	private TurnoDao turnoDao = new TurnoDao();
 
-	private List<Turno> turnos = new ArrayList<>();
 	
 
 //Caso de uso 7 
@@ -104,8 +103,14 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
     
     // Cancelar el Turno
 
-	public boolean cancelarTurno(int id, Cliente solicitante, boolean esEmpleado) {
-	
+	public boolean cancelarTurno(int id, Persona solicitante, boolean esEmpleado) {
+		
+		
+		if (!esEmpleado && solicitante == null) {
+	        System.out.println("Error: solicitante null cuando se espera un cliente.");
+	        return false;
+	    }
+	    
 		Turno turno = turnoDao.traer(id);
 		
 		
@@ -156,8 +161,16 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	
     //  ---- Caso de Uso 9 ----
 	
-	public List<Turno> traerTurnosPorServicioYFecha(int idServicio, LocalDate fecha) {
-	    return turnoDao.traerPorServicioYFecha(idServicio, fecha);
+	public void imprimirReporteCancelados(List<Turno> turnosCancelados) {
+	    System.out.println("Reporte de Turnos Cancelados:");
+	    for (Turno t : turnosCancelados) {
+	        System.out.println("ID: " + t.getIdTurno() + ", Cliente: " + t.getCliente().getNombre() 
+	            + ", Fecha: " + t.getFecha() + ", Hora: " + t.getHoraTurno() 
+	            + ", Servicio: " + t.getServicios());
+	    }
 	}
+	
+	
+	
 	
 }

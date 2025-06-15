@@ -19,6 +19,7 @@ public class Servicio {
 		this.idServicio = idServicio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		
 		this.turnos = turnos;
 	}
 	
