@@ -1,4 +1,7 @@
-/bin/
-/.settings/
-/.project
-/.classpath
+# Eclipse
+.settings/
+.project
+.classpath
+
+# Compiled class files
+bin/
