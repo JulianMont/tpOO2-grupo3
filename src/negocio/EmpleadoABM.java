@@ -11,9 +11,17 @@ public class EmpleadoABM {
 		this.dao = new EmpleadoDao();
 	}
 
-	public Empleado traer(int dni) {
+	public Empleado traer(int dni){
 		Empleado e = dao.traerPorDni(dni);
+
 		return e;
+	}
+	
+	public Empleado traerIdEmpleado(int id) {
+		
+		Empleado empleado = dao.traer(id);
+		
+		return empleado;
 	}
 	
 	public int agregar(Empleado e) throws Exception {
