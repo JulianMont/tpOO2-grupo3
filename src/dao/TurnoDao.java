@@ -2,6 +2,7 @@ package dao;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -9,6 +10,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+
+import datos.Cliente;
 
 import datos.EstadoTurno;
 import datos.Turno;
@@ -157,7 +161,7 @@ public class TurnoDao {
     }
     
     
-    //CU6
+    //CU3
     public List<Turno> traerPorEmpleado(int dniEmpleado) {
         List<Turno> lista = null;
         try {
@@ -174,6 +178,8 @@ public class TurnoDao {
     }
 
     
+    
+
     // CdU 9
     
     public List<Turno> traerTurnosPorEmpleadoFechaHora(int dniEmpleado, LocalDate fecha, LocalDateTime horaTurno) {
@@ -194,35 +200,7 @@ public class TurnoDao {
     }
 
 
-    public List<Turno> traerPorServicioYFecha(int idServicio, LocalDate fecha) {
-        List<Turno> lista = null;
-        try {
-            iniciaOperacion();
-            lista = session.createQuery(
-                "select t from Turno t join t.servicios s " +
-                "where s.idServicio = :idServicio and t.fecha = :fecha", Turno.class)
-                .setParameter("idServicio", idServicio)
-                .setParameter("fecha", fecha)
-                .getResultList();
-        } finally {
-            session.close();
-        }
-        return lista;
-    }
-
-    public List<Turno> traerPorServicio(int id) {
-        List<Turno> turnos = null;
-        try {
-            iniciaOperacion();
-            String hql = "from Turno t where t.servicio = :servicio";
-            turnos = session.createQuery(hql, Turno.class)
-                            .setParameter("servicio", id)
-                            .getResultList();
-        } finally {
-            session.close();
-        }
-        return turnos;
-    }
+   
     
     // --- CU 9 ---
     
@@ -276,4 +254,50 @@ public class TurnoDao {
     	return turnos;
     }
     
+  //CU10
+    public List<Turno> traerTurnosCompletadosCliente(Cliente cliente,EstadoTurno estado){
+    	
+    	List<Turno> turnos = new ArrayList<Turno>();
+    	
+    	try {
+    		iniciaOperacion();
+    		
+    		Query<Turno> query = session.createQuery("from Turno t where t.cliente = :cliente and t.estado = :estado", Turno.class)
+    				.setParameter("cliente", cliente)
+    				.setParameter("estado", estado);
+    	
+    		turnos = query.getResultList();
+		} finally {
+			session.close();
+			
+		}
+    	
+    	
+    	return turnos;
+    
+    		} 
+    //CU5
+public List<Turno> traerTurnosPendientesTalDia(EstadoTurno estado,LocalDate fecha){
+	
+	List<Turno> turnos = new ArrayList<Turno>();
+	
+	try {
+		iniciaOperacion();
+		
+		Query<Turno> query = session.createQuery("from Turno t where t.estado = :estado and t.fecha = :fecha", Turno.class)
+				.setParameter("estado", estado)
+				.setParameter("fecha", fecha);
+	
+		turnos = query.getResultList();
+	} finally {
+		session.close();
+		
+	}
+	
+	
+	return turnos;
+
+		} 
+
 }
+

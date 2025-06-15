@@ -2,7 +2,9 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.util.Comparator;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -83,7 +85,14 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
 	
 	
 
+//caso de uso 10
+	
+	public List<Turno> traerTurnosCompletadosCliente(Cliente cliente){
+		
+		return turnoDao.traerTurnosCompletadosCliente(cliente, EstadoTurno.COMPLETADO);
+	}
 
+<<<<<<< HEAD
 	
 	
 	// ---- Caso de Uso 1 ----
@@ -169,6 +178,11 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
 	    
 	}
 	
+	//Caso de uso 5
+		public List<Turno> traerTurnosPendientesTalDia (LocalDate fecha){
+			return turnoDao.traerTurnosPendientesTalDia(EstadoTurno.EN_PROCESO, fecha);
+		} 
+	
     //  ---- Caso de Uso 9 ----
 	
 	public void imprimirReporteCancelados(List<Turno> turnosCancelados) {
@@ -202,6 +216,7 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
 	    	//agrupo por empleado los turnos y voy sumando la cantidad de turnos
 	        Map<Empleado, Long> turnosPorEmpleado = turnosDelMes.stream()
 	                .collect(Collectors.groupingBy(Turno::getEmpleado, Collectors.counting()));
+
 
 	        //genero la lista y la devuelvo
 	        return turnosPorEmpleado.entrySet().stream()

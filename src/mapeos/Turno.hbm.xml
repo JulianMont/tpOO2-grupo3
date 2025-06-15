@@ -9,7 +9,10 @@
         </id>
         <property name="fecha" column="fecha" type="org.hibernate.type.LocalDateType"/>
         <property name="horaTurno" column="horaTurno" type="org.hibernate.type.LocalDateTimeType"/>
+
         <property name="estado" column="estado">
+
+
 		    <type name="org.hibernate.type.EnumType">
 		        <param name="enumClass">datos.EstadoTurno</param>
 		        <param name="useNamed">true</param>
@@ -22,6 +25,6 @@
             <key column="idTurno"/>
             <many-to-many column="idServicio" class="datos.Servicio"/>
         </set>
-       
+
     </class>
 </hibernate-mapping>

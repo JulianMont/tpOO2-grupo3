@@ -12,22 +12,25 @@ public class Turno {
 	private LocalDateTime horaTurno;
 	private Cliente cliente;
 	private Empleado empleado;
-	private EstadoTurno estado = EstadoTurno.EN_PROCESO;
-	private Set<Servicio> servicios;
+	private EstadoTurno estado;
 	
+	private Set<Servicio> servicios;
+
 	public Turno() {
 		super();
 	}
 
+
 	public Turno(int idTurno, LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado,
 			EstadoTurno estado, Set<Servicio> servicios) {
+
 		super();
 		this.idTurno = idTurno;
 		this.fecha = fecha;
 		this.horaTurno = horaTurno;
 		this.cliente = cliente;
 		this.empleado = empleado;
-		this.estado = estado;
+		this.estado = EstadoTurno.EN_PROCESO;
 		this.servicios = servicios;
 	}
 
@@ -71,6 +74,7 @@ public class Turno {
 		this.empleado = empleado;
 	}
 
+<<<<<<< HEAD
 	public EstadoTurno getEstado() {
 		return estado;
 	}
@@ -96,6 +100,7 @@ public class Turno {
 	           "Servicios:\n" + servicios.stream()
 	                                     .map(servicio -> " - " + servicio)
 	                                     .collect(Collectors.joining("\n"));
+
 	}
 
 
@@ -110,3 +115,8 @@ public class Turno {
 	
 }
 	
+=======
+	
+		
+}}
+>>>>>>> 037be48 (Casos de usos 5 y 10)
