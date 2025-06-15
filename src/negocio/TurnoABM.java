@@ -2,16 +2,17 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
-
-
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import dao.TurnoDao;
-import datos.Cliente;
 import datos.Empleado;
 import datos.EstadoTurno;
 import datos.Persona;
 import datos.Turno;
+import helpers.EmpleadoRanking;
 
 public class TurnoABM {
 	
@@ -21,20 +22,29 @@ public class TurnoABM {
 
 //Caso de uso 7 
 
-public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
+public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws Exception {
+	
+    if (fechaInicio == null || fechaFin == null) {
+        throw new IllegalArgumentException("Las fechas no pueden ser nulas");
+    }
+    if (fechaInicio.isAfter(fechaFin)) {
+        throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+    }
 	 return turnoDao.traerTurnosEntreFechas(fechaInicio, fechaFin);
 }
 	
 	
 //Caso de uso 8
 
-	public List<Turno> traerTurnosCliente(Cliente cliente, LocalDate fecha) {
-		 return turnoDao.traerTurnosCliente(cliente, fecha);
-		    }
+	public List<Turno> traerTurnosCliente(int idCliente, LocalDate fecha) throws Exception {
+		
+	    if (fecha == null) {
+	        throw new IllegalArgumentException("La fecha no puede ser nula");
+	    }
+		 return turnoDao.traerTurnosCliente(idCliente, fecha);
+	}
 		
 		
-
-
 	public Turno traer(int idTurno) {
 		Turno t= turnoDao.traer(idTurno);
 		return t;}
@@ -170,6 +180,37 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	    }
 	}
 	
+	//Caso de uso 11
+
+		public List<Turno> traerTurnosEmpleadoPorFecha(int idEmpleado, LocalDate fecha) throws Exception {
+			
+		    if (fecha == null) {
+		        throw new IllegalArgumentException("La fecha no puede ser nula");
+		    }
+			 return turnoDao.traerTurnosEmpleado(idEmpleado, fecha);
+		}
+		
+	//CU 12
+	    
+	    public List<EmpleadoRanking> generarRankingMensual (int mes,int anio)  throws Exception {
+	    	
+	    	LocalDate fechaInicio = LocalDate.of(anio,mes,1);
+	    	LocalDate fechaFin = fechaInicio.withDayOfMonth(fechaInicio.lengthOfMonth());
+	    	
+	    	List<Turno> turnosDelMes = traerTurnos(fechaInicio, fechaFin);
+	    	
+	    	//agrupo por empleado los turnos y voy sumando la cantidad de turnos
+	        Map<Empleado, Long> turnosPorEmpleado = turnosDelMes.stream()
+	                .collect(Collectors.groupingBy(Turno::getEmpleado, Collectors.counting()));
+
+	        //genero la lista y la devuelvo
+	        return turnosPorEmpleado.entrySet().stream()
+	                .map(entry -> new EmpleadoRanking(entry.getKey(), entry.getValue()))
+	                .sorted(Comparator.comparingLong(EmpleadoRanking::getCantidadTurnos).reversed())
+	                .toList();
+	    	
+	    }
+	    
 	
 	
 	

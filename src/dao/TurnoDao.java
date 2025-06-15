@@ -2,7 +2,6 @@ package dao;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -11,11 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-
-import datos.Cliente;
-import datos.Empleado;
 import datos.EstadoTurno;
-import datos.Servicio;
 import datos.Turno;
 
 
@@ -132,16 +127,16 @@ public class TurnoDao {
     
     //CU 8
     
-    public List<Turno> traerTurnosCliente(Cliente cliente,LocalDate fecha){
+    public List<Turno> traerTurnosCliente(int idCliente,LocalDate fecha){
     	
     	List<Turno> turnos = null;
     	
     	try {
     		iniciaOperacion();
     		
-    		String hql = "from Turno t where t.cliente = :cliente and t.fecha = :fecha";
+    		String hql = "from Turno t where t.cliente.id = :idCliente and t.fecha = :fecha";
     		Query<Turno> query = session.createQuery(hql, Turno.class)
-    				.setParameter("cliente", cliente)
+    				.setParameter("idCliente", idCliente)
     				.setParameter("fecha", fecha);
     		turnos = query.getResultList();
     		
@@ -247,6 +242,38 @@ public class TurnoDao {
             session.close();
         }
         return lista;
+    }
+    
+    
+    //CU 11
+    
+    public List<Turno> traerTurnosEmpleado(int idEmpleado,LocalDate fecha){
+    	
+    	List<Turno> turnos = null;
+    	
+    	try {
+    		iniciaOperacion();
+    		
+    		String hql = "from Turno t where t.empleado.id = :idEmpleado and t.fecha = :fecha";
+    		Query<Turno> query = session.createQuery(hql, Turno.class)
+    				.setParameter("idEmpleado", idEmpleado)
+    				.setParameter("fecha", fecha);
+    		turnos = query.getResultList();
+    		
+            for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
+            
+    		
+		} finally {
+			session.close();
+			// TODO: handle finally clause
+		}
+    	
+    	
+    	return turnos;
     }
     
 }
