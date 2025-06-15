@@ -63,7 +63,7 @@ public class TestCompletarTurno {
 		
         // Crear Turno con entidades ya persistidas
         Turno turno = new Turno();
-        turno.setEstado(EstadoTurno.EN_PROCESO.name());
+        turno.setEstado(EstadoTurno.EN_PROCESO);
         turno.setFecha(null);  // Temporal si la columna permite null
         turno.setHoraTurno(null);
         turno.setCliente(cliente);
