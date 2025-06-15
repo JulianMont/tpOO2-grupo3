@@ -15,7 +15,7 @@
         <property name="telefono" column="telefono" type="string"/>
 
         <joined-subclass name="datos.Cliente" table="cliente">
-            <key column="idCliente"/>
+            <key column="idPersona"/>
             <property name="estado" column="estado" type="boolean"/>
             <set name="turnos" table="turno" inverse="true" lazy="true" fetch="select">
                 <key column="idCliente" not-null="true"/>
@@ -24,7 +24,7 @@
         </joined-subclass>
 
         <joined-subclass name="datos.Empleado" table="empleado">
-            <key column="idEmpleado"/>
+            <key column="idPersona"/>
             <property name="legajo" column="legajo" type="string"/>
 			<property name="puesto" column="puesto" type="string"/>
             <property name="estado" column="estado" type="boolean"/>
