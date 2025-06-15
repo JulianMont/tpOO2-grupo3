@@ -2,12 +2,12 @@ package datos;
 
 public abstract class Persona {
 	protected int idPersona;
-	private String nombre;
-	private String apellido;
-	private int dni;
-	private String email;
-	private String movil;
-	private String telefono;
+	protected String nombre;
+	protected String apellido;
+	protected int dni;
+	protected String email;
+	protected String movil;
+	protected String telefono;
 
 	public Persona() {
 		super();
@@ -35,7 +35,7 @@ public abstract class Persona {
 		return nombre;
 	}
 
-	protected void setNombre(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
@@ -43,7 +43,7 @@ public abstract class Persona {
 		return apellido;
 	}
 
-	protected void setApellido(String apellido) {
+	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
 
@@ -51,7 +51,7 @@ public abstract class Persona {
 		return dni;
 	}
 
-	protected void setDni(int dni) {
+	public void setDni(int dni) {
 		this.dni = dni;
 	}
 
@@ -59,7 +59,7 @@ public abstract class Persona {
 		return email;
 	}
 
-	protected void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -67,7 +67,7 @@ public abstract class Persona {
 		return movil;
 	}
 
-	protected void setMovil(String movil) {
+	public void setMovil(String movil) {
 		this.movil = movil;
 	}
 
@@ -75,7 +75,7 @@ public abstract class Persona {
 		return telefono;
 	}
 
-	protected void setTelefono(String telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
