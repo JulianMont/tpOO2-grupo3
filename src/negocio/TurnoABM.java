@@ -2,6 +2,7 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -53,9 +54,9 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
     }
 
     if (fueAtendido) {
-        turno.setEstado(EstadoTurno.COMPLETADO.name());
+        turno.setEstado(EstadoTurno.COMPLETADO);
     } else {
-        turno.setEstado(EstadoTurno.CANCELADO.name());}
+        turno.setEstado(EstadoTurno.CANCELADO);}
 
     turnoDao.actualizar(turno);
     System.out.println("Estado actualizado a: " + turno.getEstado());
@@ -67,7 +68,17 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	    return turnoDao.traerPorEmpleado(dniEmpleado);
 	}
 
+//caso de uso 10
+	
+	public List<Turno> traerTurnosCompletadosCliente(Cliente cliente){
+		
+		return turnoDao.traerTurnosCompletadosCliente(cliente, EstadoTurno.COMPLETADO);
+	}
 
+//Caso de uso 5
+	public List<Turno> traerTurnosPendientesTalDia (LocalDate fecha){
+		return turnoDao.traerTurnosPendientesTalDia(EstadoTurno.EN_PROCESO, fecha);
+	} 
 
 public boolean  modificarTurno (int idTurno, LocalDate fecha, LocalDateTime horaTurno ){
 
@@ -100,7 +111,7 @@ Turno turno = turnoDao.traer(id);
 if (turno != null) {
     
     if (esEmpleado || turno.getCliente().equals(solicitante)) {
-        turno.setEstado(EstadoTurno.CANCELADO.name());
+        turno.setEstado(EstadoTurno.CANCELADO);
         turnoDao.actualizar(turno);
         System.out.println("Turno cancelado exitosamente.");
         return true;

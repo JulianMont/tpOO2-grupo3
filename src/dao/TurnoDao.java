@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import datos.Cliente;
+import datos.EstadoTurno;
 import datos.Turno;
 
 
@@ -132,7 +133,7 @@ public class TurnoDao {
     }
     
     
-    //CU6
+    //CU3
     public List<Turno> traerPorEmpleado(int dniEmpleado) {
         List<Turno> lista = null;
         try {
@@ -148,7 +149,50 @@ public class TurnoDao {
         return lista;
     }
 
+    //CU10
     
+    public List<Turno> traerTurnosCompletadosCliente(Cliente cliente,EstadoTurno estado){
+    	
+    	List<Turno> turnos = new ArrayList<Turno>();
+    	
+    	try {
+    		iniciaOperacion();
+    		
+    		Query<Turno> query = session.createQuery("from Turno t where t.cliente = :cliente and t.estado = :estado", Turno.class)
+    				.setParameter("cliente", cliente)
+    				.setParameter("estado", estado);
+    	
+    		turnos = query.getResultList();
+		} finally {
+			session.close();
+			
+		}
+    	
+    	
+    	return turnos;
     
-    
+    		} 
+    //CU5
+public List<Turno> traerTurnosPendientesTalDia(EstadoTurno estado,LocalDate fecha){
+	
+	List<Turno> turnos = new ArrayList<Turno>();
+	
+	try {
+		iniciaOperacion();
+		
+		Query<Turno> query = session.createQuery("from Turno t where t.estado = :estado and t.fecha = :fecha", Turno.class)
+				.setParameter("estado", estado)
+				.setParameter("fecha", fecha);
+	
+		turnos = query.getResultList();
+	} finally {
+		session.close();
+		
+	}
+	
+	
+	return turnos;
+
+		} 
 }
+

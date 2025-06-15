@@ -7,13 +7,20 @@
         <id name="idTurno" column="idTurno">
             <generator class="identity"/>
         </id>
-        <property name="fecha" column="fecha" type="date"/>
-        <property name="horaTurno" column="horaTurno" type="timestamp"/>
-        <property name="estado" column="estado" type="string"> 
-        </property>
+        <property name="fecha" column="fecha" type="org.hibernate.type.LocalDateType"/>
+        <property name="horaTurno" column="horaTurno" type="org.hibernate.type.LocalDateTimeType"/>
+         <property name="estado" column="estado">
+		    <type name="org.hibernate.type.EnumType">
+		        <param name="enumClass">datos.EstadoTurno</param>
+		        <param name="useNamed">true</param>
+		    </type>
+		</property>
         
         <many-to-one name="cliente" class="datos.Cliente" column="idCliente" not-null="true"/>
         <many-to-one name="empleado" class="datos.Empleado" column="idEmpleado" not-null="true"/>
-       
+        <set name="servicios" table="servicioxturno" lazy="true" fetch="join" order-by="idTurno asc">
+            <key column="idTurno"/>
+            <many-to-many column="idServicio" class="datos.Servicio"/>
+        </set>
     </class>
 </hibernate-mapping>
