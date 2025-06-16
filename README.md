@@ -2,7 +2,8 @@
 Pasos a seguir para levantar el proyecto:
  * Version de Java 17 o superior.
  * MySQL como Base de Datos.
- * Crear una Base de Datos con la siguiente instruccion **create database nombre;** 
+ * Crear una Base de Datos con la siguiente instruccion **create database nombre;**  
+   (No pudimos hacer que funcionen las variables de entorno, proceder a hardcodear la url, usuario y password en el hibernate.cfg.xml)
  * Configurar las variables de entorno para que el archivo hibernate.cfg.xml las reconozca antes de iniciar la aplicacion:
    * DB_URL -> colocar la url de la base de datos.
    * DB_USERNAME -> colocar tu usuario de la base de datos.
