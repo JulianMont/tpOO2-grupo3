@@ -7,12 +7,15 @@ import java.util.Comparator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.TurnoDao;
+import datos.Cliente;
 import datos.Empleado;
 import datos.EstadoTurno;
 import datos.Persona;
+import datos.Servicio;
 import datos.Turno;
 import helpers.EmpleadoRanking;
 
@@ -92,7 +95,7 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
 		return turnoDao.traerTurnosCompletadosCliente(cliente, EstadoTurno.COMPLETADO);
 	}
 
-<<<<<<< HEAD
+
 	
 	
 	// ---- Caso de Uso 1 ----
@@ -108,12 +111,25 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
     
     // Reservar el Turno
     
-    public Turno turnoReservado(Turno turno) throws Exception{
-    	if (existeTurno(turno.getEmpleado(), turno.getFecha(), turno.getHoraTurno())) {
-            throw new Exception("Ya existe un turno para ese empleado en esa fecha y hora");
+    public Turno reservarTurno(LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado, Set<Servicio> servicio) throws Exception {
+
+        if (existeTurno(empleado, fecha, horaTurno)) {
+            throw new Exception("Ya existe un turno para ese empleado en esa fecha y hora.");
         }
+
+        // Construcción del objeto Turno
+        Turno turno = new Turno();
+        turno.setCliente(cliente);
+        turno.setEmpleado(empleado);
+        turno.setServicios(servicio);
+        turno.setFecha(fecha);
+        turno.setHoraTurno(horaTurno);
+        turno.setEstado(EstadoTurno.EN_PROCESO);
+
+        // Guardado en base de datos
         int id = turnoDao.agregar(turno);
         turno.setIdTurno(id);
+
         return turno;
     }
     

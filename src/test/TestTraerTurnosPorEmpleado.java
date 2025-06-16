@@ -26,7 +26,7 @@ public class TestTraerTurnosPorEmpleado {
 
         // Mostrar los turnos
         for (Turno t : turnos) {
-            System.out.println("Turno ID: " + t.getIdTurno() + " | Estado: " + t.getEstado());
+            System.out.println("Turno : " + t + " | Estado: " + t.getEstado());
         }
     }
 }

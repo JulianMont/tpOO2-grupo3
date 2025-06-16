@@ -21,7 +21,7 @@ public class TestTraerTurnosCliente {
 			Cliente cliente1 = clienteABM.traer(33123456);
 			
 			//El cliente tiene turno en plus 0 y 4
-	        LocalDate fecha = LocalDate.now().plusDays(0);
+	        LocalDate fecha = LocalDate.now().plusDays(4);
 	        
 	        
 	        List<Turno> listaTurnos = turnoABM.traerTurnosCliente(cliente1.getIdPersona(), fecha); 

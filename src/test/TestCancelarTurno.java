@@ -10,8 +10,8 @@ public class TestCancelarTurno {
     public static void main(String[] args) {
     	
         TurnoABM turnoABM = new TurnoABM();
-
-        int idTurno = 3;
+        System.out.println("CASO DE USO 2");
+        int idTurno = 7;
         int idCliente = 3;
         
         PersonaDao personaDao = new PersonaDao();

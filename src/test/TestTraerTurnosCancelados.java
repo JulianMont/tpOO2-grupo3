@@ -11,7 +11,8 @@ public class TestTraerTurnosCancelados {
 	public static void main(String[] args) {
         TurnoDao turnoDao = new TurnoDao();
         List<Turno> turnos = turnoDao.traerCancelados();
-
+        
+        System.out.println("--CASO DE USO 9--");
         System.out.println("=== Turnos Cancelados ===");
         for (Turno t : turnos) {
             System.out.println("ID: " + t.getIdTurno()

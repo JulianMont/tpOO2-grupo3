@@ -10,6 +10,7 @@ public class TestModificarDiaYHoraTurno {
         
         
         TurnoABM turnoABM = new TurnoABM();
+        System.out.println("CASO DE USO 4");
         
         LocalDate fechaModificada = LocalDate.of (2025,7,12);
 		LocalDateTime horaModificada = fechaModificada.atTime(17,50);

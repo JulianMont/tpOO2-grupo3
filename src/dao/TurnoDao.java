@@ -163,18 +163,23 @@ public class TurnoDao {
     
     //CU3
     public List<Turno> traerPorEmpleado(int dniEmpleado) {
-        List<Turno> lista = null;
+        List<Turno> turnos = null;
         try {
             iniciaOperacion();
-            lista = session.createQuery(
+            turnos = session.createQuery(
                         "from Turno t where t.empleado.dni = :dni order by t.fecha", 
                         Turno.class)
                     .setParameter("dni", dniEmpleado)
                     .getResultList();
+            for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
         } finally {
             session.close();
         }
-        return lista;
+        return turnos;
     }
 
     
@@ -267,6 +272,12 @@ public class TurnoDao {
     				.setParameter("estado", estado);
     	
     		turnos = query.getResultList();
+    		
+    		for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
 		} finally {
 			session.close();
 			
@@ -289,6 +300,11 @@ public List<Turno> traerTurnosPendientesTalDia(EstadoTurno estado,LocalDate fech
 				.setParameter("fecha", fecha);
 	
 		turnos = query.getResultList();
+		for (Turno turno : turnos) {
+            Hibernate.initialize(turno.getCliente());
+            Hibernate.initialize(turno.getEmpleado());
+            Hibernate.initialize(turno.getServicios());
+        }
 	} finally {
 		session.close();
 		

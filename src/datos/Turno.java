@@ -74,7 +74,6 @@ public class Turno {
 		this.empleado = empleado;
 	}
 
-<<<<<<< HEAD
 	public EstadoTurno getEstado() {
 		return estado;
 	}
@@ -102,21 +101,5 @@ public class Turno {
 	                                     .collect(Collectors.joining("\n"));
 
 	}
-
-
-	
-
-	
-	
-	
-	
-	
-	
-	
 }
-	
-=======
-	
-		
-}}
->>>>>>> 037be48 (Casos de usos 5 y 10)
+
