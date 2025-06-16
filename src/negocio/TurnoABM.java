@@ -2,16 +2,22 @@ package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.Comparator;
+
 import java.util.List;
-
-
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import dao.TurnoDao;
 import datos.Cliente;
 import datos.Empleado;
 import datos.EstadoTurno;
 import datos.Persona;
+import datos.Servicio;
 import datos.Turno;
+import helpers.EmpleadoRanking;
 
 public class TurnoABM {
 	
@@ -21,20 +27,29 @@ public class TurnoABM {
 
 //Caso de uso 7 
 
-public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
+public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws Exception {
+	
+    if (fechaInicio == null || fechaFin == null) {
+        throw new IllegalArgumentException("Las fechas no pueden ser nulas");
+    }
+    if (fechaInicio.isAfter(fechaFin)) {
+        throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+    }
 	 return turnoDao.traerTurnosEntreFechas(fechaInicio, fechaFin);
 }
 	
 	
 //Caso de uso 8
 
-	public List<Turno> traerTurnosCliente(Cliente cliente, LocalDate fecha) {
-		 return turnoDao.traerTurnosCliente(cliente, fecha);
-		    }
+	public List<Turno> traerTurnosCliente(int idCliente, LocalDate fecha) throws Exception {
+		
+	    if (fecha == null) {
+	        throw new IllegalArgumentException("La fecha no puede ser nula");
+	    }
+		 return turnoDao.traerTurnosCliente(idCliente, fecha);
+	}
 		
 		
-
-
 	public Turno traer(int idTurno) {
 		Turno t= turnoDao.traer(idTurno);
 		return t;}
@@ -73,9 +88,13 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	
 	
 
+//caso de uso 10
+	
+	public List<Turno> traerTurnosCompletadosCliente(Cliente cliente){
+		
+		return turnoDao.traerTurnosCompletadosCliente(cliente, EstadoTurno.COMPLETADO);
+	}
 
-	
-	
 	// ---- Caso de Uso 1 ----
     
     // Verificar si existe el turno
@@ -89,12 +108,25 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
     
     // Reservar el Turno
     
-    public Turno turnoReservado(Turno turno) throws Exception{
-    	if (existeTurno(turno.getEmpleado(), turno.getFecha(), turno.getHoraTurno())) {
-            throw new Exception("Ya existe un turno para ese empleado en esa fecha y hora");
+    public Turno reservarTurno(LocalDate fecha, LocalDateTime horaTurno, Cliente cliente, Empleado empleado, Set<Servicio> servicio) throws Exception {
+        
+        if (existeTurno(empleado, fecha, horaTurno)) {
+            throw new Exception("Ya existe un turno para ese empleado en esa fecha y hora.");
         }
+
+        // Construcción del objeto Turno
+        Turno turno = new Turno();
+        turno.setCliente(cliente);
+        turno.setEmpleado(empleado);
+        turno.setServicios(servicio);
+        turno.setFecha(fecha);
+        turno.setHoraTurno(horaTurno);
+        turno.setEstado(EstadoTurno.EN_PROCESO);
+
+        // Guardado en base de datos
         int id = turnoDao.agregar(turno);
         turno.setIdTurno(id);
+
         return turno;
     }
     
@@ -159,6 +191,11 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	    
 	}
 	
+	//Caso de uso 5
+		public List<Turno> traerTurnosPendientesTalDia (LocalDate fecha){
+			return turnoDao.traerTurnosPendientesTalDia(EstadoTurno.EN_PROCESO, fecha);
+		} 
+	
     //  ---- Caso de Uso 9 ----
 	
 	public void imprimirReporteCancelados(List<Turno> turnosCancelados) {
@@ -170,6 +207,38 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) {
 	    }
 	}
 	
+	//Caso de uso 11
+
+		public List<Turno> traerTurnosEmpleadoPorFecha(int idEmpleado, LocalDate fecha) throws Exception {
+			
+		    if (fecha == null) {
+		        throw new IllegalArgumentException("La fecha no puede ser nula");
+		    }
+			 return turnoDao.traerTurnosEmpleado(idEmpleado, fecha);
+		}
+		
+	//CU 12
+	    
+	    public List<EmpleadoRanking> generarRankingMensual (int mes,int anio)  throws Exception {
+	    	
+	    	LocalDate fechaInicio = LocalDate.of(anio,mes,1);
+	    	LocalDate fechaFin = fechaInicio.withDayOfMonth(fechaInicio.lengthOfMonth());
+	    	
+	    	List<Turno> turnosDelMes = traerTurnos(fechaInicio, fechaFin);
+	    	
+	    	//agrupo por empleado los turnos y voy sumando la cantidad de turnos
+	        Map<Empleado, Long> turnosPorEmpleado = turnosDelMes.stream()
+	                .collect(Collectors.groupingBy(Turno::getEmpleado, Collectors.counting()));
+
+
+	        //genero la lista y la devuelvo
+	        return turnosPorEmpleado.entrySet().stream()
+	                .map(entry -> new EmpleadoRanking(entry.getKey(), entry.getValue()))
+	                .sorted(Comparator.comparingLong(EmpleadoRanking::getCantidadTurnos).reversed())
+	                .toList();
+	    	
+	    }
+	    
 	
 	
 	
