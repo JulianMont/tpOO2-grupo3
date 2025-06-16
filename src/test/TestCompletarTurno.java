@@ -1,89 +1,28 @@
 package test;
 
-import datos.EstadoTurno;
-import datos.Cliente;
-import datos.Empleado;
-import datos.Turno;
-import negocio.ClienteABM;
-import negocio.EmpleadoABM;
-import negocio.ServicioABM;
-import negocio.TurnoABM;
-import datos.Servicio;
-import dao.ClienteDao;
-import dao.EmpleadoDao;
-import dao.ServicioDao;
-import dao.TurnoDao;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import datos.Turno;
+
+import negocio.TurnoABM;
+
 
 public class TestCompletarTurno {
     public static void main(String[] args) {
     	TurnoABM turnoAbm = new TurnoABM();
-    	ClienteABM clienteAbm = new ClienteABM();
-        EmpleadoABM empleadoAbm = new EmpleadoABM();
-        ServicioABM servicioAbm = new ServicioABM();
-       	
-
-        // Crear y guardar Cliente
-        Cliente cliente = new Cliente(
-                "Mati", "Forlan",13336 , "juan@email.com", "11111", "22222",
-                new HashSet<>(), true
-        );
-        try {
-			clienteAbm.agregar(cliente);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	
+       
+        
         
 
-        // Crear y guardar Empleado
-        Empleado empleado = new Empleado(
-                "Roman", "Perez", 3457, "pedro@email.com", "45697833", "9",
-                "LEG123", "Mecanico", new HashSet<>(), true
-        );
         try {
-			empleadoAbm.agregar(empleado);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println(empleado.getDni());
-        // Crear y guardar Servicio
-        Servicio servicio = new Servicio("VTV", "Verificacion de autos");
-        try {
-			servicioAbm.agregar(servicio);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-        // Crear Turno con entidades ya persistidas
-        Turno turno = new Turno();
-        turno.setEstado(EstadoTurno.EN_PROCESO);
-        turno.setFecha(null);  // Temporal si la columna permite null
-        turno.setHoraTurno(null);
-        turno.setCliente(cliente);
-        turno.setEmpleado(empleado);
-        Set<Servicio> servicios = new HashSet<>();
-        servicios.add(servicio);
-        turno.setServicios(servicios);
-        try {
-			turnoAbm.agregar(turno);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println(turno.getIdTurno());
-        
-        try {
-            turnoAbm.completarTurno(turno.getIdTurno(), true);
+        	
+        	Turno t1 = turnoAbm.traer(2);
+        	System.out.println("---CASO DE USO 6:CAMBIAR ESTADO DEL TURNO A COMPLETADO-- ");
+        	System.out.println("Estado actual  " + t1.getEstado());
+            turnoAbm.completarTurno(t1.getIdTurno(), false);
 
-            Turno t1 = turnoAbm.traer(turno.getIdTurno());
-            System.out.println("Esperado: COMPLETADO | Real: " + t1.getEstado());
+            Turno t1Actualizado = turnoAbm.traer(t1.getIdTurno());
+            System.out.println("Esperado: COMPLETADO | Real: " + t1Actualizado.getEstado());
         } catch (Exception e) {
             e.printStackTrace();
         }

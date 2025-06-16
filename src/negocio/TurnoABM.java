@@ -7,11 +7,11 @@ import java.util.Comparator;
 
 import java.util.List;
 import java.util.Map;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.TurnoDao;
-import datos.Cliente;
 import datos.Empleado;
 import datos.EstadoTurno;
 import datos.Persona;
@@ -89,6 +89,12 @@ public List<Turno> traerTurnos(LocalDate fechaInicio,LocalDate fechaFin) throws 
 	
 
 //caso de uso 10
+	
+	public List<Turno> traerTurnosCompletadosCliente(Cliente cliente){
+		
+		return turnoDao.traerTurnosCompletadosCliente(cliente, EstadoTurno.COMPLETADO);
+	}
+
 	
 	public List<Turno> traerTurnosCompletadosCliente(Cliente cliente){
 		

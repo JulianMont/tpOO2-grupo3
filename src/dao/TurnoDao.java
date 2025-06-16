@@ -13,9 +13,8 @@ import org.hibernate.query.Query;
 
 
 import datos.Cliente;
-import datos.Empleado;
+
 import datos.EstadoTurno;
-import datos.Servicio;
 import datos.Turno;
 
 
@@ -132,16 +131,16 @@ public class TurnoDao {
     
     //CU 8
     
-    public List<Turno> traerTurnosCliente(Cliente cliente,LocalDate fecha){
+    public List<Turno> traerTurnosCliente(int idCliente,LocalDate fecha){
     	
     	List<Turno> turnos = null;
     	
     	try {
     		iniciaOperacion();
     		
-    		String hql = "from Turno t where t.cliente = :cliente and t.fecha = :fecha";
+    		String hql = "from Turno t where t.cliente.id = :idCliente and t.fecha = :fecha";
     		Query<Turno> query = session.createQuery(hql, Turno.class)
-    				.setParameter("cliente", cliente)
+    				.setParameter("idCliente", idCliente)
     				.setParameter("fecha", fecha);
     		turnos = query.getResultList();
     		
@@ -162,7 +161,7 @@ public class TurnoDao {
     }
     
     
-    //CU6
+    //CU3
     public List<Turno> traerPorEmpleado(int dniEmpleado) {
         List<Turno> lista = null;
         try {
@@ -179,6 +178,8 @@ public class TurnoDao {
     }
 
     
+    
+
     // CdU 9
     
     public List<Turno> traerTurnosPorEmpleadoFechaHora(int dniEmpleado, LocalDate fecha, LocalDateTime horaTurno) {
@@ -199,35 +200,7 @@ public class TurnoDao {
     }
 
 
-    public List<Turno> traerPorServicioYFecha(int idServicio, LocalDate fecha) {
-        List<Turno> lista = null;
-        try {
-            iniciaOperacion();
-            lista = session.createQuery(
-                "select t from Turno t join t.servicios s " +
-                "where s.idServicio = :idServicio and t.fecha = :fecha", Turno.class)
-                .setParameter("idServicio", idServicio)
-                .setParameter("fecha", fecha)
-                .getResultList();
-        } finally {
-            session.close();
-        }
-        return lista;
-    }
-
-    public List<Turno> traerPorServicio(int id) {
-        List<Turno> turnos = null;
-        try {
-            iniciaOperacion();
-            String hql = "from Turno t where t.servicio = :servicio";
-            turnos = session.createQuery(hql, Turno.class)
-                            .setParameter("servicio", id)
-                            .getResultList();
-        } finally {
-            session.close();
-        }
-        return turnos;
-    }
+   
     
     // --- CU 9 ---
     
@@ -249,4 +222,82 @@ public class TurnoDao {
         return lista;
     }
     
+    
+    //CU 11
+    
+    public List<Turno> traerTurnosEmpleado(int idEmpleado,LocalDate fecha){
+    	
+    	List<Turno> turnos = null;
+    	
+    	try {
+    		iniciaOperacion();
+    		
+    		String hql = "from Turno t where t.empleado.id = :idEmpleado and t.fecha = :fecha";
+    		Query<Turno> query = session.createQuery(hql, Turno.class)
+    				.setParameter("idEmpleado", idEmpleado)
+    				.setParameter("fecha", fecha);
+    		turnos = query.getResultList();
+    		
+            for (Turno turno : turnos) {
+                Hibernate.initialize(turno.getCliente());
+                Hibernate.initialize(turno.getEmpleado());
+                Hibernate.initialize(turno.getServicios());
+            }
+            
+    		
+		} finally {
+			session.close();
+			// TODO: handle finally clause
+		}
+    	
+    	
+    	return turnos;
+    }
+    
+  //CU10
+    public List<Turno> traerTurnosCompletadosCliente(Cliente cliente,EstadoTurno estado){
+    	
+    	List<Turno> turnos = new ArrayList<Turno>();
+    	
+    	try {
+    		iniciaOperacion();
+    		
+    		Query<Turno> query = session.createQuery("from Turno t where t.cliente = :cliente and t.estado = :estado", Turno.class)
+    				.setParameter("cliente", cliente)
+    				.setParameter("estado", estado);
+    	
+    		turnos = query.getResultList();
+		} finally {
+			session.close();
+			
+		}
+    	
+    	
+    	return turnos;
+    
+    		} 
+    //CU5
+public List<Turno> traerTurnosPendientesTalDia(EstadoTurno estado,LocalDate fecha){
+	
+	List<Turno> turnos = new ArrayList<Turno>();
+	
+	try {
+		iniciaOperacion();
+		
+		Query<Turno> query = session.createQuery("from Turno t where t.estado = :estado and t.fecha = :fecha", Turno.class)
+				.setParameter("estado", estado)
+				.setParameter("fecha", fecha);
+	
+		turnos = query.getResultList();
+	} finally {
+		session.close();
+		
+	}
+	
+	
+	return turnos;
+
+		} 
+
 }
+

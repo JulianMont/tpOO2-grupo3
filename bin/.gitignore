@@ -1,6 +1,6 @@
-/hibernate.cfg.out.xml
-/datos/
-/test/
-/mapeos/
 /dao/
+/datos/
+/hibernate.cfg.xml
+/mapeos/
 /negocio/
+/test/

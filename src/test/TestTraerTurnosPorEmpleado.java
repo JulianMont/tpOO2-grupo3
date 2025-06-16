@@ -13,8 +13,14 @@ public class TestTraerTurnosPorEmpleado {
         EmpleadoABM empleadoABM = new EmpleadoABM();
 
         // Traer empleado desde la base de datos por DNI
-        Empleado empleado = empleadoABM.traer(30211222); 
 
+        Empleado empleado = empleadoABM.traer(30211224); 
+        
+        System.out.println("CASO DE USO 3 : VER TURNOS DEL EMPLEADO "
+        + empleadoABM.traer(30211224).getNombre() +" "
+        + empleadoABM.traer(30211224).getApellido())
+        ;
+        
         // Traer los turnos del empleado
         List<Turno> turnos = turnoABM.traerTurnosDeEmpleado(empleado.getDni());
 
